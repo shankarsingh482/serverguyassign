@@ -1,0 +1,60 @@
+{
+   "works":[
+   	{
+      "authors":"Plutarch",
+      "subject":"Floor coverings",
+      "book":"Moralia"
+     },
+     {
+   
+      "authors":"Francis Bacon",
+      "subject":"Protected Daisy",
+      "book":"Essays"
+   },
+{
+      "authors":"Rene Descarates",
+      "subject":"Sciences",
+     "book":"Discours de la methode"
+  },
+   {
+      "authors":"Aldous Huxley",
+      "subject":"Moral and ethical aspects of science",
+      "book":"Brave New World"
+  } ,
+   
+   {   "authors":"John Leonard Greenberg",
+      "subject":"Travel",
+      "book":"Geothe's Werke"
+   },
+   {
+      "authors":"Leonardo da vinci",
+      "subject":"Italian Manuscripts",
+      "book":"Leonardo"
+   },
+  { 
+      "authors":"Thomas E. Pinelli",
+      "subject":"Information Transfer",
+      "book":"NASA/DOD aerospace knowledge diffusion reasrch project"
+   },
+   {
+      "authors":"Francis Bacon",
+      "subject":"Protected DAISY",
+      "book":"The advancement of learning"
+   },
+   {
+      "authors":"Alexander von humboldt",
+      "subject":"Cosmology",
+      "book":"Cosmos"
+   },
+   {
+      "authors":"United States Congress. House Committe on Appropriations",
+      "subject":"Public Expenditures",
+      "book":"Gasoline motor-boat"
+   },
+   {
+      "authors":"John Stuart Mil",
+      "subject":"Science",
+      "book":"A system of logic ratiocinative and inductive"
+   }   
+]
+}

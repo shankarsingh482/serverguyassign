@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book Bank API</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+
+    .topnav-right {
+        float: right;
+    }
+
+
+    body {
+        font-family: Arial;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    form.example input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        width: 80%;
+        background: #f1f1f1;
+    }
+
+    form.example button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
+
+    form.example button:hover {
+        background: #0b7dda;
+    }
+
+
+</style>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand m-auto" href="/dashboard">Book Bank</a>
+        </div>
+        <div class="topnav-right">
+            <ul class="nav navbar-nav -align-left">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/history">Last 15 Search</a></li>
+                <li><a href="/">Logout</a></li>
+
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div class="container">
+    &nbsp;<h1>Book Record</h1>
+    <div class="col-sm-8">
+        <table class="table table-bordered">
+
+            <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Subject of book</th>
+                <th>Places</th>
+                <th>People</th>
+                <th>Latest Revision</th>
+
+            </tr>
+            </thead>
+            <tbody class="mypanel">
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-sm-3">
+        <div class="picpanel" style="margin-left: 200px;">
+
+        </div>
+    </div>
+
+</div>
+</body>
+<% match%>
+<script>
+    $.getJSON(`https://openlibrary.org/works/<%= match %>.json`, function(data) {
+
+
+        var text = `<tr><td>${data.title}</td>
+                        <td>${data.subjects}</td>
+                        <td>${data.subject_places}</td>
+                    <td>${data.subject_people}</td>
+                    <td>${data.latest_revision}</td></tr>`
+        var pic = `${data.covers[0]}`
+        $(".mypanel").html(text);
+        var add =pic+'-M.jpg'
+        $(".picpanel").append("<img src='https://covers.openlibrary.org/w/id/" + add + "'>");
+        // $(".picpanel").css('background-image', 'url(' + add + ')');
+    });
+</script>
+</html>

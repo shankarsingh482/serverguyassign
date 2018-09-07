@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book Bank API</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.bundle.min.js"></script>
+
+
+
+</head>
+<style>
+    /* scaffolding */
+    /* ----------- */
+    .tt-menu,
+    .gist {
+        text-align: left;
+    }
+    /* base styles */
+    /* ----------- */
+    html {
+        font: normal normal normal 18px/1.2 "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
+        color: #292f33;
+    }
+    a {
+        color: #03739c;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    .table-of-contents li {
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+    }
+    .table-of-contents li a {
+        font-size: 16px;
+        color: #999;
+    }
+    p + p {
+        margin: 30px 0 0 0;
+    }
+    /* site theme */
+    /* ---------- */
+    .title {
+        margin: 20px 0 0 0;
+        font-size: 64px;
+    }
+    .example {
+        padding: 30px 0;
+    }
+    .example-name {
+        margin: 20px 0;
+        font-size: 32px;
+    }
+    .demo {
+        position: relative;
+        *z-index: 1;
+        margin: 50px 0;
+    }
+    .typeahead,
+    .tt-query,
+    .tt-hint {
+        width: 396px;
+        height: 30px;
+        padding: 8px 12px;
+        font-size: 24px;
+        line-height: 30px;
+        border: 2px solid #ccc;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        outline: none;
+    }
+    .typeahead {
+        background-color: #fff;
+    }
+    .typeahead:focus {
+        border: 2px solid #0097cf;
+    }
+    .tt-query {
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+    .tt-hint {
+        color: #999
+    }
+    .tt-menu {
+        width: 600px;
+        margin: 12px 400px;
+        padding: 8px 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+    .tt-suggestion {
+        padding: 3px 20px;
+        font-size: 18px;
+        line-height: 24px;
+    }
+    .tt-suggestion:hover {
+        cursor: pointer;
+        color: #fff;
+        background-color: #0097cf;
+    }
+    .tt-suggestion.tt-cursor {
+        color: #fff;
+        background-color: #0097cf;
+    }
+    .tt-suggestion p {
+        margin: 0;
+    }
+    .gist {
+        font-size: 14px;
+    }
+    /* example specific styles */
+    /* ----------------------- */
+    #custom-templates .empty-message {
+        padding: 5px 10px;
+        text-align: center;
+    }
+    #multiple-datasets .league-name {
+        margin: 0 20px 5px 20px;
+        padding: 3px 0;
+        border-bottom: 1px solid #ccc;
+    }
+    #scrollable-dropdown-menu .tt-menu {
+        max-height: 150px;
+        overflow-y: auto;
+    }
+    #rtl-support .tt-menu {
+        text-align: right;
+    }
+    #multiple-datasets .search {
+        margin: 0 20px 5px 20px;
+        padding: 3px 0;
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+<style>
+    .topnav-right {
+        float: right;
+    }
+    body {
+        font-family: Arial;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    form.example input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        height: 50px;
+        width: 1000px;
+        text-align: center;
+        background: #f1f1f1;
+        margin-left: 80px;
+    }
+</style>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand m-auto" href="#">Book Bank</a>
+        </div>
+        <div class="topnav-right">
+            <ul class="nav navbar-nav -align-left">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/history">Last 15 Search</a></li>
+                <li><a href="/logout">Logout</a></li>
+
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container">
+    <!--
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <b> Authors selected: </b>
+            <ul id="authorlist"></ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <b> Books selected: </b>
+            <ul id="booklist"></ul>
+        </div>
+-->
+    &nbsp;
+    <br>
+    <br>
+
+    <div id="multiple-datasets">
+        <form class="example" action="#">
+            <input class="typeahead" type="text" placeholder="Enter The Book Name to Search" name="search">
+        </form>
+    </div>
+
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <table class="table table-bordered">
+        <h1 align="center">List of Science Book Records</h1>
+        &nbsp;<button id="buttoncsv"class="btn btn-danger" value="" style="margin-left: 1020px; margin-bottom: 15px;">Export To CSV</button>
+        <thead>
+        <tr>
+            <th>Book Name</th>
+            <th>Author Name</th>
+            <th>Subject</th>
+        </tr>
+        </thead>
+        <tbody class="mypanel">
+
+
+        <script>
+
+            $.getJSON('https://openlibrary.org/subjects/science.json', function(data) {
+                var show_per_page = 2;
+                var page= data.works.length;
+                var number_page = Math.ceil(page/show_per_page);
+
+                //mydata=data.works;
+                for (var i=1;i<data.works.length;i++)
+                {
+                    var akey = `${data.works[i].authors[0].key}`
+                    var bkey =`${data.works[i].key}`
+                    var text = `<tr><td><a href="/book${bkey}">${data.works[i].title}</a></td>
+                        <td><a href="/author${akey}">${data.works[i].authors[0].name}</a></td>
+                    <td>${data.works[i].subject[i]}</td></tr>`
+                    $(".mypanel").append(text);
+
+                }
+                //console.log("checking"+JSON.stringify({data:mydata}));
+
+
+//console.log(mydata.works[0].authors);
+                $("#buttoncsv").click(function(){
+                    $.ajax({
+
+                        type: 'POST',
+                        url: `http://localhost:9090/csv`,
+                        contentType: "application/json",
+                        data: JSON.stringify(mydata)
+                    });
+                    // console.log(mydata);
+
+                })
+               // console.log(mydata);
+
+            });
+        </script>
+        </tbody>
+    </table>
+</div>
+
+</body>
+
+<script>
+    var books = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: 'http://openlibrary.org/search.json?title=%QUERY',
+            wildcard: '%QUERY',
+            filter: function (searchResults) {
+                return $.map(searchResults.docs, function (searchResults) {
+                    //  console.log(searchResults.author_name);
+                    // console.log("key is "+searchResults.key)
+                    if (JSON.parse(sessionStorage.getItem("selectedBooks") == undefined || JSON.parse(sessionStorage.getItem("selectedBooks").indexOf(searchResults.title)) == -1)){
+                        return {
+                            title: searchResults.title,
+                            key: searchResults.key,
+                        };
+                    }
+                });
+            }
+        }
+    });
+    var authorsList = [];
+    var authors = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: 'http://openlibrary.org/search.json?author=%QUERY',
+            wildcard: '%QUERY',
+            filter: function (searchResults) {
+                return $.map(searchResults.docs, function (searchResults) {
+                    if (searchResults.author_name !== undefined){
+                        var author = searchResults.author_name.toString();
+                    }
+                    if (authorsList.indexOf(author) == -1) {
+                        authorsList.push(author);
+                        return {
+                            author_key: searchResults.author_key,
+                            author: author,
+                        };
+                    }
+                });
+            },
+        }
+    });
+    $('#multiple-datasets .typeahead').typeahead({
+            highlight: true
+        },
+        {
+            display: 'title',
+            source: books,
+            templates: {
+                header: '<h3 class="search">Books List</h3>'
+            }
+        },
+        {
+            name: 'authors',
+            display: 'author',
+            source: authors,
+            templates: {
+                header: '<h3 class="search">Authors List</h3>'
+            }
+        });
+    $('#multiple-datasets').bind('typeahead:selected', function(obj, datum, name) {
+        if (name === 'authors'){
+         var  request =  $.ajax({
+
+             type: 'POST',
+             data: {author: datum.author}
+               });
+               request.done(function (msg) {
+                   window.location.href="/author/authors/" +datum.author_key[0];
+               });
+            request.fail(function (jqXHR,textStatus) {
+                alert("Request Failed"+textStatus);
+
+            });
+        }
+        else
+        {
+            var  request =  $.ajax({
+
+                type: 'POST',
+                url: `http://localhost:9090/history`,
+                data: {book: datum.title}
+            });
+            request.done(function (msg) {
+                window.location.href="/book" +datum.key;
+            });
+            request.fail(function (jqXHR,textStatus) {
+                alert("Request Failed"+textStatus);
+
+            });
+
+        }
+
+    });
+
+
+
+</script>
+</html>
